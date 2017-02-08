@@ -93,6 +93,18 @@ namespace CodeWars_NextBigNumberWithSameDigits
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void NextBiggerNumber_Give_531__Return_NoBiggerNumber()
+        {
+            //Assign
+            int input = 531;
+            int expected = NoBiggerNumber;
+            //Act
+            int actual = NextBiggerNumber(input);
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
         private int NextBiggerNumber(int input)
         {
             if (HasNextBiggerNumber(input))
