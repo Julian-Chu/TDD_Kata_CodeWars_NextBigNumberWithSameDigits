@@ -80,6 +80,18 @@ namespace CodeWars_NextBigNumberWithSameDigits
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void NextBiggerNumber_Give_153_Return_315()
+        {
+            //Assign
+            int input = 153;
+            int expected = 315;
+            //Act
+            int actual = NextBiggerNumber(input);
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
         private int NextBiggerNumber(int input)
         {
             List<char> digits = new List<char>();
@@ -89,13 +101,30 @@ namespace CodeWars_NextBigNumberWithSameDigits
                 digits.Add(digit);
             }
 
-            if (digits.Count > 1 && digits[digits.Count - 2] < digits[digits.Count-1])
+            if (digits.Count > 1 && digits[digits.Count - 2] < digits[digits.Count - 1])
             {
-                char temp = digits[digits.Count-2];
-                digits[digits.Count-2] = digits[digits.Count-1];
-                digits[digits.Count-1] = temp;
+                char temp = digits[digits.Count - 2];
+                digits[digits.Count - 2] = digits[digits.Count - 1];
+                digits[digits.Count - 1] = temp;
                 string result = new string(digits.ToArray());
                 return int.Parse(result);
+            }
+            else if (digits.Count >2 && digits[digits.Count-3] < digits[digits.Count-1])
+            {
+                char temp = digits[digits.Count - 3];
+                digits[digits.Count - 3] = digits[digits.Count - 1];
+                digits[digits.Count - 1] = temp;
+
+                if (digits[digits.Count - 2] > digits[digits.Count - 1])
+                {
+                    temp = digits[digits.Count - 2];
+                    digits[digits.Count - 2] = digits[digits.Count - 1];
+                    digits[digits.Count - 1] = temp;
+                }
+
+                string result = new string(digits.ToArray());
+                return int.Parse(result);
+
             }
             else
                 return -1;
