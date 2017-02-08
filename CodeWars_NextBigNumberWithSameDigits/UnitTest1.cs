@@ -89,11 +89,11 @@ namespace CodeWars_NextBigNumberWithSameDigits
                 digits.Add(digit);
             }
 
-            if (digits.Count > 1 && digits[0] < digits[1])
+            if (digits.Count > 1 && digits[digits.Count - 2] < digits[digits.Count-1])
             {
-                char temp = digits[0];
-                digits[0] = digits[1];
-                digits[1] = temp;
+                char temp = digits[digits.Count-2];
+                digits[digits.Count-2] = digits[digits.Count-1];
+                digits[digits.Count-1] = temp;
                 string result = new string(digits.ToArray());
                 return int.Parse(result);
             }
