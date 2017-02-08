@@ -66,7 +66,18 @@ namespace CodeWars_NextBigNumberWithSameDigits
             int actual = NextBiggerNumber(input);
             //Assert
             Assert.AreEqual(expected, actual);
+        }
 
+        [TestMethod]
+        public void NextBiggerNumber_Give_513_Return_531()
+        {
+            //Assign
+            int input = 513;
+            int expected = 531;
+            //Act
+            int actual = NextBiggerNumber(input);
+            //Assert
+            Assert.AreEqual(expected, actual);
         }
 
         private int NextBiggerNumber(int input)
