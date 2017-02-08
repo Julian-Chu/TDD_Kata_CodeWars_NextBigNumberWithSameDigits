@@ -20,10 +20,22 @@ namespace CodeWars_NextBigNumberWithSameDigits
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void NextBiggerNumber_Give_9_Return_NoBiggerNumber()
+        {
+            //Assign
+            int input = 9;
+            int expected = NoBiggerNumber;
+            //Act
+            int actual = NextBiggerNumber(input);
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
 
         private int NextBiggerNumber(int v)
         {
-            throw new NotImplementedException();
+            return -1;
         }
     }
 }
