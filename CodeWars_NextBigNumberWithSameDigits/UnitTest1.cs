@@ -117,6 +117,19 @@ namespace CodeWars_NextBigNumberWithSameDigits
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void NextBiggerNumber_Give_2017_Return_2071()
+        {
+            //Assign
+            int input = 2017;
+            int expected = 2071;
+            //Act
+            int actual = NextBiggerNumber(input);
+            //Assert
+            Assert.AreEqual(expected, actual);
+
+        }
+
         private int NextBiggerNumber(int input)
         {
             if (HasNextBiggerNumber(input))
