@@ -32,6 +32,20 @@ namespace CodeWars_NextBigNumberWithSameDigits
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void NextBiggerNumber_Give_12_Return_21()
+        {
+            //Assign
+            int input = 12;
+            int expected = 21;
+            //Act
+            int actual = NextBiggerNumber(input);
+            //Assert
+            Assert.AreEqual(expected, actual);
+
+
+        }
+
 
         private int NextBiggerNumber(int v)
         {
