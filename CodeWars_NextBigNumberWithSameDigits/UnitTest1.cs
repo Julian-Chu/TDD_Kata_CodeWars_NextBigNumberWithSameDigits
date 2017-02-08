@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CodeWars_NextBigNumberWithSameDigits
 {
@@ -94,40 +95,106 @@ namespace CodeWars_NextBigNumberWithSameDigits
 
         private int NextBiggerNumber(int input)
         {
+            if (HasNextBiggerNumber(input))
+            {
+                return GetNextBiggerNumber(input);
+            }
+            else
+                return NoBiggerNumber;
+        }
+
+        private  int GetNextBiggerNumber(int input)
+        {
+            List<char> digits = input.ToString().ToList<char>();
+            int highestDigit = 0;
+            int lowestDigit = digits.Count - 1;
+
+            bool swapped = false;
+            int previousIndex = lowestDigit - 1;
+            int index = lowestDigit;
+
+            while(previousIndex > highestDigit)
+            {
+                if (digits[index] > digits[previousIndex])
+                {
+                    digits.swap(index, previousIndex);
+                    swapped = true;
+                    break;
+                }
+                index--;
+                previousIndex = index - 1;
+            }
+            
+       
+            List<char> resultChars = digits;
+            // example:  1432 -> 2431 -> 2134
+            if (!swapped)
+            {
+                digits.swap(highestDigit, lowestDigit);
+                resultChars = digits.KeepHighestDigitAndOrderRestDigitsByAscending();
+            }
+
+            int result = int.Parse( new string(resultChars.ToArray()));
+            return result;
+        }
+
+        private bool HasNextBiggerNumber(int input)
+        {
             List<char> digits = new List<char>();
+            HashSet<char> charsTableOfInput = new HashSet<char>();
 
             foreach (char digit in input.ToString())
             {
                 digits.Add(digit);
-            }
 
-            if (digits.Count > 1 && digits[digits.Count - 2] < digits[digits.Count - 1])
-            {
-                char temp = digits[digits.Count - 2];
-                digits[digits.Count - 2] = digits[digits.Count - 1];
-                digits[digits.Count - 1] = temp;
-                string result = new string(digits.ToArray());
-                return int.Parse(result);
-            }
-            else if (digits.Count >2 && digits[digits.Count-3] < digits[digits.Count-1])
-            {
-                char temp = digits[digits.Count - 3];
-                digits[digits.Count - 3] = digits[digits.Count - 1];
-                digits[digits.Count - 1] = temp;
-
-                if (digits[digits.Count - 2] > digits[digits.Count - 1])
+                if (!charsTableOfInput.Contains(digit))
                 {
-                    temp = digits[digits.Count - 2];
-                    digits[digits.Count - 2] = digits[digits.Count - 1];
-                    digits[digits.Count - 1] = temp;
+                    charsTableOfInput.Add(digit);
                 }
-
-                string result = new string(digits.ToArray());
-                return int.Parse(result);
-
             }
+
+            //Only one digit like "1" or "9"
+            if (digits.Count == 1)
+            {
+                return false;
+            }
+            //all digits with same character like "111", "2222"
+            else if (charsTableOfInput.Count == 1)
+            {
+                return false;
+            }
+            // check all digits are ordered by descending like "54321" has no bigger number , "54231" has bigger
             else
-                return -1;
+            {
+                var digitsOrderByDescent = digits.OrderByDescending(digit => digit).ToList();
+
+                return !digits.SequenceEqual(digitsOrderByDescent);
+            }
+        }
+    }
+
+    public static class MyExtensions
+    {
+        public static void swap(this List<char> digits, int index1, int index2)
+        {
+            char temp = digits[index2];
+            digits[index2] = digits[index1];
+            digits[index1] = temp;
+        }
+
+        public static List<char> KeepHighestDigitAndOrderRestDigitsByAscending(this List<char> digits)
+        {
+            var restDigitsOrderByAscend = digits.Where((p, index) => index != 0).OrderBy(digit => digit).ToList();
+
+            List<char> resultDigits = new List<char>();
+            resultDigits.Add(digits[0]);
+
+            foreach (var digit in restDigitsOrderByAscend)
+            {
+                resultDigits.Add(digit);
+            }
+
+            return resultDigits;
         }
     }
 }
