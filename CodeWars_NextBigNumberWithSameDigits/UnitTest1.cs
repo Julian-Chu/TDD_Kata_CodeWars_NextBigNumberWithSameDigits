@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using System.Collections.Generic;
 
 namespace CodeWars_NextBigNumberWithSameDigits
 {
@@ -42,14 +42,27 @@ namespace CodeWars_NextBigNumberWithSameDigits
             int actual = NextBiggerNumber(input);
             //Assert
             Assert.AreEqual(expected, actual);
-
-
         }
 
-
-        private int NextBiggerNumber(int v)
+        private int NextBiggerNumber(int input)
         {
-            return -1;
+            List<char> digits = new List<char>();
+
+            foreach (char digit in input.ToString())
+            {
+                digits.Add(digit);
+            }
+
+            if (digits.Count > 1 && digits[0] < digits[1])
+            {
+                char temp = digits[0];
+                digits[0] = digits[1];
+                digits[1] = temp;
+                string result = new string(digits.ToArray());
+                return int.Parse(result);
+            }
+            else
+                return -1;
         }
     }
 }
