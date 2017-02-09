@@ -127,7 +127,6 @@ namespace CodeWars_NextBigNumberWithSameDigits
             int actual = NextBiggerNumber(input);
             //Assert
             Assert.AreEqual(expected, actual);
-
         }
 
         [TestMethod]
@@ -135,7 +134,7 @@ namespace CodeWars_NextBigNumberWithSameDigits
         {
             //Assign
             int input = 1072;
-            int expected = 1027;
+            int expected = 1207;
             //Act
             int actual = NextBiggerNumber(input);
             //Assert
@@ -152,37 +151,24 @@ namespace CodeWars_NextBigNumberWithSameDigits
                 return NoBiggerNumber;
         }
 
-        private  int GetNextBiggerNumber(int input)
+        private int GetNextBiggerNumber(int input)
         {
             List<char> digits = input.ToString().ToList<char>();
-            int highestDigit = 0;
-            int lowestDigit = digits.Count - 1;
 
-            bool swapped = false;
-            int previousIndex = lowestDigit - 1;
-            int index = lowestDigit;
-
-            while(previousIndex > highestDigit)
+            List<char> resultChars = digits;
+            for (int i = 0; i < digits.Count - 1; i++)
             {
-                if (digits[index] > digits[previousIndex])
+                var subdigits = digits.Where((p, Index) => Index > i).ToList();
+                var subdigitsOrderByDescending = subdigits.OrderByDescending(p => p).ToList();
+                if (subdigits.SequenceEqual(subdigitsOrderByDescending) || i == digits.Count -2)
                 {
-                    digits.swap(index, previousIndex);
-                    swapped = true;
+                    digits.swap(i, digits.Count - 1);
+                    resultChars = digits.KeepAssignedHighDigitsAndOrderRestDigitsByAscending(i);
                     break;
                 }
-                index--;
-                previousIndex = index - 1;
-            }            
-       
-            List<char> resultChars = digits;
-            // example:  1432 -> 2431 -> 2134
-            if (!swapped)
-            {
-                digits.swap(highestDigit, lowestDigit);
-                resultChars = digits.KeepHighestDigitAndOrderRestDigitsByAscending();
             }
 
-            int result = int.Parse( new string(resultChars.ToArray()));
+            int result = int.Parse(new string(resultChars.ToArray()));
             return result;
         }
 
@@ -215,7 +201,6 @@ namespace CodeWars_NextBigNumberWithSameDigits
             else
             {
                 var digitsOrderByDescent = digits.OrderByDescending(digit => digit).ToList();
-
                 return !digits.SequenceEqual(digitsOrderByDescent);
             }
         }
@@ -236,6 +221,26 @@ namespace CodeWars_NextBigNumberWithSameDigits
 
             List<char> resultDigits = new List<char>();
             resultDigits.Add(digits[0]);
+
+            foreach (var digit in restDigitsOrderByAscend)
+            {
+                resultDigits.Add(digit);
+            }
+
+            return resultDigits;
+        }
+
+        public static List<char> KeepAssignedHighDigitsAndOrderRestDigitsByAscending(this List<char> digits, int assignIndex)
+        {
+            var restDigitsOrderByAscend = digits.Where((p, index) => index > assignIndex).OrderBy(digit => digit).ToList();
+
+            List<char> resultDigits = new List<char>();
+            int Index = 0;
+            while (Index <= assignIndex)
+            {
+                resultDigits.Add(digits[Index]);
+                Index++;
+            }
 
             foreach (var digit in restDigitsOrderByAscend)
             {
