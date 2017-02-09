@@ -130,6 +130,18 @@ namespace CodeWars_NextBigNumberWithSameDigits
 
         }
 
+        [TestMethod]
+        public void NextBiggerNumber_Give_1072_Return_1207()
+        {
+            //Assign
+            int input = 1072;
+            int expected = 1027;
+            //Act
+            int actual = NextBiggerNumber(input);
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
         private int NextBiggerNumber(int input)
         {
             if (HasNextBiggerNumber(input))
@@ -160,8 +172,7 @@ namespace CodeWars_NextBigNumberWithSameDigits
                 }
                 index--;
                 previousIndex = index - 1;
-            }
-            
+            }            
        
             List<char> resultChars = digits;
             // example:  1432 -> 2431 -> 2134
