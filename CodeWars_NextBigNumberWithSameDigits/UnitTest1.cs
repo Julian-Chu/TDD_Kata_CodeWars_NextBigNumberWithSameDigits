@@ -156,14 +156,14 @@ namespace CodeWars_NextBigNumberWithSameDigits
             List<char> digits = input.ToString().ToList<char>();
 
             List<char> resultChars = digits;
-            for (int i = 0; i < digits.Count - 1; i++)
+            for (int checkedHighDigit = 0; checkedHighDigit < digits.Count - 1; checkedHighDigit++)
             {
-                var subdigits = digits.Where((p, Index) => Index > i).ToList();
-                var subdigitsOrderByDescending = subdigits.OrderByDescending(p => p).ToList();
-                if (subdigits.SequenceEqual(subdigitsOrderByDescending) || i == digits.Count -2)
+                var subLowDigits = digits.Where((p, Index) => Index > checkedHighDigit).ToList();
+
+                if (subLowDigits.IsOrderedByDescending() || digits.IsTensDigit(checkedHighDigit))
                 {
-                    digits.swap(i, digits.Count - 1);
-                    resultChars = digits.KeepAssignedHighDigitsAndOrderRestDigitsByAscending(i);
+                    digits.swap(checkedHighDigit, digits.Count - 1);
+                    resultChars = digits.KeepAssignedHighDigitsAndOrderRestDigitsByAscending(checkedHighDigit);
                     break;
                 }
             }
@@ -187,7 +187,7 @@ namespace CodeWars_NextBigNumberWithSameDigits
                 }
             }
 
-            //Only one digit like "1" or "9"
+            //Only units digit like "1" or "9"
             if (digits.Count == 1)
             {
                 return false;
@@ -248,6 +248,17 @@ namespace CodeWars_NextBigNumberWithSameDigits
             }
 
             return resultDigits;
+        }
+
+        public static bool IsOrderedByDescending(this List<char> digits)
+        {
+            var digitsOrderByDescending = digits.OrderByDescending(p => p).ToList();
+            return digits.SequenceEqual(digitsOrderByDescending);
+        }
+
+        public static bool IsTensDigit(this List<char> digits, int checkedDigit)
+        {
+            return checkedDigit == digits.Count - 2;
         }
     }
 }
